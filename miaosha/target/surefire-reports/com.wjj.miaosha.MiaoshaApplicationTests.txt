@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.wjj.miaosha.MiaoshaApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.666 s - in com.wjj.miaosha.MiaoshaApplicationTests
