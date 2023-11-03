@@ -51,28 +51,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 //        if (!ValidatorUtil.isMobile(mobile)) {
 //            return RespVO.error(RespVOEnum.MOBILE_ERROR);
 //        }
-
         //根据手机号获取用户
         User user = userMapper.selectById(mobile);
         if (user == null) {
 //            return RespVO.error(RespVOEnum.LOGIN_ERROR);
             throw new GlobalException(RespBeanEnum.LOGIN_ERROR);
         }
-
         //判断密码是否正确
         if (!MD5Util.fromPassToDBPass(password, user.getSlat()).equals(user.getPassword())) {
 //            return RespVO.error(RespVOEnum.LOGIN_ERROR);
             throw new GlobalException(RespBeanEnum.LOGIN_ERROR);
         }
-
 //        生成cookie
         String ticket = UUIDUtil.uuid();
         //将用户信息存入redis
         redisTemplate.opsForValue().set("user:" + ticket, user);
-
 //        request.getSession().setAttribute(ticket, user);
         CookieUtil.setCookie(request, response, "userTicket", ticket);
-        return RespBean.success();
+        return RespBean.success(ticket);
     }
 
     /**
