@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * @Description: 秒杀
@@ -35,10 +36,12 @@ public class SecKillController {
 
     /**
      * @Description:秒杀
+     * windows优化前QPS：1278
+     * Linux优化前QPS：178
      * @Param:
      * @Return:
      */
-    @RequestMapping("/doSeckill")
+    @RequestMapping(value = "/doSeckill", method = RequestMethod.GET)
     public String doSecKill(Model model, User user, Long goodsId) {
         if (user == null) {
             return "login";
