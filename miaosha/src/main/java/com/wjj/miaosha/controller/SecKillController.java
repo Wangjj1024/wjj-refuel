@@ -37,7 +37,6 @@ public class SecKillController {
     /**
      * @Description:秒杀
      * windows优化前QPS：1278
-     * Linux优化前QPS：178
      * @Param:
      * @Return:
      */
