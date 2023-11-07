@@ -3,9 +3,12 @@ package com.wjj.miaosha.controller;
 import com.wjj.miaosha.service.IUserService;
 import com.wjj.miaosha.vo.LoginVO;
 import com.wjj.miaosha.vo.RespBean;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,6 +26,7 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/login")
 @Slf4j
+@Api(tags = "这是一个登录功能")
 public class LoginController {
 
 
@@ -34,7 +38,8 @@ public class LoginController {
      * @Param:
      * @Return:
      */
-    @RequestMapping(value = "/toLogin", method = RequestMethod.GET)
+    @GetMapping(value = "/toLogin")
+    @ApiOperation(value = "这是一个test")
     public String toLogin() {
         return "login";
     }
