@@ -22,9 +22,11 @@ public enum RespBeanEnum {
     LOGIN_ERROR(500210, "用户名或密码错误"),
     MOBILE_ERROR(500211, "手机号码格式不正确"),
     BIND_ERROR(500212, "参数校验异常"),
+    MOBILE_NOT_EXITST(500213, "手机号码不存在"),
+    PASSWORD_UPDATE_FAILED(500214, "密码更新失败"),
     //秒杀模块5005xx
     EMPTY_STOCK(500500, "库存不足"),
-    PEMPTY_ERROR(500501,"该商品没人限购一件"),
+    PEMPTY_ERROR(500501, "该商品没人限购一件"),
     ;
 
     private final Integer code;
