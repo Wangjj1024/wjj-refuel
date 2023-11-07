@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  * @Description: 跳转商品列表页
  * 3万线程数
  * window优化前QPS：1332
- * Linux优化前QPS： 207
+ *        缓存QPS：3500
  * @Author: wjj
  * @CreateTime: 2023-10-18
  * @Version: 1.0
