@@ -7,7 +7,7 @@ import com.wjj.miaosha.pojo.User;
 import com.wjj.miaosha.service.IGoodsService;
 import com.wjj.miaosha.service.ISeckillOrderService;
 import com.wjj.miaosha.service.impl.OrderServiceImpl;
-import com.wjj.miaosha.vo.GoodsVo;
+import com.wjj.miaosha.vo.GoodsVO;
 import com.wjj.miaosha.vo.RespBeanEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,7 +46,7 @@ public class SecKillController {
             return "login";
         }
         model.addAttribute("user", user);
-        GoodsVo goods = goodsService.findGoodsVoByGoodsId(goodsId);
+        GoodsVO goods = goodsService.findGoodsVoByGoodsId(goodsId);
         if (goods.getStockCount() < 1) {
             model.addAttribute("errmsg", RespBeanEnum.EMPTY_STOCK.getMessage());
             return "secKillFail";

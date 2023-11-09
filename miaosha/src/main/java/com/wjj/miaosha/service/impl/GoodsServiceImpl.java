@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wjj.miaosha.mapper.GoodsMapper;
 import com.wjj.miaosha.pojo.Goods;
 import com.wjj.miaosha.service.IGoodsService;
-import com.wjj.miaosha.vo.GoodsVo;
+import com.wjj.miaosha.vo.GoodsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +29,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      * @Return:
      */
     @Override
-    public List<GoodsVo> findGoodsVo() {
+    public List<GoodsVO> findGoodsVo() {
         return goodsMapper.findGoodsVo();
     }
 
@@ -39,7 +39,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      * @Return:
      */
     @Override
-    public GoodsVo findGoodsVoByGoodsId(Long goodsId) {
+    public GoodsVO findGoodsVoByGoodsId(Long goodsId) {
         return goodsMapper.findGoodsVoByGoodsId(goodsId);
     }
 }

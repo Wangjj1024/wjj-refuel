@@ -8,7 +8,7 @@ import com.wjj.miaosha.service.IGoodsService;
 import com.wjj.miaosha.service.IOrderService;
 import com.wjj.miaosha.service.ISeckillGoodsService;
 import com.wjj.miaosha.service.ISeckillOrderService;
-import com.wjj.miaosha.vo.GoodsVo;
+import com.wjj.miaosha.vo.GoodsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +43,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      * @Return:
      */
     @Override
-    public Order secKill(User user, GoodsVo goods) {
+    public Order secKill(User user, GoodsVO goods) {
         //更新秒杀订单==》秒杀商品表减库存
         SeckillGoods seckillGoods = seckillGoodsService.getOne(new QueryWrapper<>(), "goods_id".equals(goods.getId()));
         seckillGoods.setStockCount(seckillGoods.getStockCount() - 1);

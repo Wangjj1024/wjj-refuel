@@ -66,3 +66,6 @@ logging:
 
 knife4j:
   enable: true
+
+server:
+  port: 8080

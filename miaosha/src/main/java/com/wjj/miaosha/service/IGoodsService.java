@@ -2,7 +2,7 @@ package com.wjj.miaosha.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wjj.miaosha.pojo.Goods;
-import com.wjj.miaosha.vo.GoodsVo;
+import com.wjj.miaosha.vo.GoodsVO;
 
 import java.util.List;
 
@@ -21,12 +21,12 @@ public interface IGoodsService extends IService<Goods> {
      * @Param:
      * @Return:
      */
-    List<GoodsVo> findGoodsVo();
+    List<GoodsVO> findGoodsVo();
 
     /**
      * @Description:获取商品信息
      * @Param:
      * @Return:
      */
-    GoodsVo findGoodsVoByGoodsId(Long goodsId);
+    GoodsVO findGoodsVoByGoodsId(Long goodsId);
 }

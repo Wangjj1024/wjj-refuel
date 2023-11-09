@@ -2,7 +2,7 @@ package com.wjj.miaosha.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.wjj.miaosha.pojo.Goods;
-import com.wjj.miaosha.vo.GoodsVo;
+import com.wjj.miaosha.vo.GoodsVO;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public interface GoodsMapper extends BaseMapper<Goods> {
      * @Param:
      * @Return:
      */
-    List<GoodsVo> findGoodsVo();
+    List<GoodsVO> findGoodsVo();
 
-    GoodsVo findGoodsVoByGoodsId(Long goodsId);
+    GoodsVO findGoodsVoByGoodsId(Long goodsId);
 }

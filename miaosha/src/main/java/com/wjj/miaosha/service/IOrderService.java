@@ -3,7 +3,7 @@ package com.wjj.miaosha.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wjj.miaosha.pojo.Order;
 import com.wjj.miaosha.pojo.User;
-import com.wjj.miaosha.vo.GoodsVo;
+import com.wjj.miaosha.vo.GoodsVO;
 
 /**
  * <p>
@@ -20,5 +20,5 @@ public interface IOrderService extends IService<Order> {
      * @Param:
      * @Return:
      */
-    Order secKill(User user, GoodsVo goods);
+    Order secKill(User user, GoodsVO goods);
 }
