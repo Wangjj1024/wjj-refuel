@@ -34,25 +34,25 @@ public class UserUtil {
         }
         System.out.println("create user");
         //插入数据库的操作
-//        Connection conn = getConn();
-//        String sql = "insert into t_user(login_count,nickname,register_date,slat,password,id) values (?,?,?,?,?,?)";
-//        PreparedStatement pst = conn.prepareStatement(sql);
-//        for (int i = 0; i < users.size(); i++) {
-//            User user = users.get(i);
-//            pst.setInt(1, user.getLoginCount());
-//            pst.setString(2, user.getNickname());
-//            pst.setTimestamp(3, new Timestamp(user.getRegisterDate().getTime()));
-//            pst.setString(4, user.getSlat());
-//            pst.setString(5, user.getPassword());
-//            pst.setLong(6, user.getId());
-//            System.out.println(user.getId() + "插入成功");
-//            pst.addBatch();
-//        }
-//        pst.executeBatch();// 执行批处理
-//        pst.clearBatch(); // 清除批处理
-//        pst.clearParameters();
-//        conn.close();
-//        System.out.println("insert to db");
+        Connection conn = getConn();
+        String sql = "insert into t_user(login_count,nickname,register_date,slat,password,id) values (?,?,?,?,?,?)";
+        PreparedStatement pst = conn.prepareStatement(sql);
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            pst.setInt(1, user.getLoginCount());
+            pst.setString(2, user.getNickname());
+            pst.setTimestamp(3, new Timestamp(user.getRegisterDate().getTime()));
+            pst.setString(4, user.getSlat());
+            pst.setString(5, user.getPassword());
+            pst.setLong(6, user.getId());
+            System.out.println(user.getId() + "插入成功");
+            pst.addBatch();
+        }
+        pst.executeBatch();// 执行批处理
+        pst.clearBatch(); // 清除批处理
+        pst.clearParameters();
+        conn.close();
+        System.out.println("insert to db");
         //登录，生成userTicket
         String urlString = "http://localhost:8080/login/doLogin";
         File file = new File("E:\\桌面\\config.txt");
@@ -98,7 +98,7 @@ public class UserUtil {
     static Connection getConn() throws Exception {
         String url = "jdbc:mysql://134.175.62.214:3306/miaosha?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai";
         String userName = "root";
-        String passwd = "123456";
+        String passwd = "root1024";
         String driver = "com.mysql.cj.jdbc.Driver";
         Class.forName(driver);
         return DriverManager.getConnection(url, userName, passwd);
