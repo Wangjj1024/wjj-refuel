@@ -131,7 +131,7 @@ public class GoodsController {
      */
     @GetMapping("/detail/{goodsId}")
     @ResponseBody
-    public RespBean toDetail(Model model, User user, @PathVariable("goodsId") Long goodsId) {
+    public RespBean toDetail(User user, @PathVariable("goodsId") Long goodsId) {
         GoodsVO goodsVo = goodsService.findGoodsVoByGoodsId(goodsId);
         Date startDate = goodsVo.getStartDate();
         Date endDate = goodsVo.getEndDate();

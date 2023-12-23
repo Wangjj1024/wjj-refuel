@@ -8,12 +8,15 @@ import com.wjj.miaosha.service.IGoodsService;
 import com.wjj.miaosha.service.ISeckillOrderService;
 import com.wjj.miaosha.service.impl.OrderServiceImpl;
 import com.wjj.miaosha.vo.GoodsVO;
+import com.wjj.miaosha.vo.RespBean;
 import com.wjj.miaosha.vo.RespBeanEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @Description: 秒杀
@@ -35,13 +38,39 @@ public class SecKillController {
     private OrderServiceImpl orderService;
 
     /**
-     * @Description:秒杀
-     * windows优化前QPS：1278
+     * @Description:秒杀 windows优化前QPS：1278
      * @Param:
      * @Return:
      */
-    @RequestMapping(value = "/doSeckill", method = RequestMethod.GET)
-    public String doSecKill(Model model, User user, Long goodsId) {
+    @RequestMapping(value = "/doSeckill", method = RequestMethod.POST)
+    @ResponseBody
+    public RespBean doSecKill(Model model, User user, Long goodsId) {
+        if (user == null) {
+            return RespBean.error(RespBeanEnum.SESSION_ERRRO);
+        }
+//        System.out.println(goodsId);
+        GoodsVO goods = goodsService.findGoodsVoByGoodsId(goodsId);
+        if (goods.getStockCount() < 1) {
+            model.addAttribute("errmsg", RespBeanEnum.EMPTY_STOCK.getMessage());
+            return RespBean.error(RespBeanEnum.EMPTY_STOCK);
+        }
+        //判断是否重复抢购
+        SeckillOrder seckillOrder = seckillOrderService.getOne(new QueryWrapper<SeckillOrder>().eq("user_id", user.getId()).eq("goods_id", goodsId));
+        if (seckillOrder != null) {
+            model.addAttribute("erromsg", RespBeanEnum.PEMPTY_ERROR.getMessage());
+            return RespBean.error(RespBeanEnum.PEMPTY_ERROR);
+        }
+        Order order = orderService.secKill(user, goods);
+        return RespBean.success(order);
+    }
+
+    /**
+     * @Description:秒杀 windows优化前QPS：1278
+     * @Param:
+     * @Return:
+     */
+    @RequestMapping(value = "/doSeckill2", method = RequestMethod.POST)
+    public String doSecKill2(Model model, User user, Long goodsId) {
         if (user == null) {
             return "login";
         }
@@ -62,5 +91,4 @@ public class SecKillController {
         model.addAttribute("goods", goods);
         return "orderDetail";
     }
-
 }

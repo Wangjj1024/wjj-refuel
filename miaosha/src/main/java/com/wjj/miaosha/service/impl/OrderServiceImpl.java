@@ -49,9 +49,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         seckillGoods.setStockCount(seckillGoods.getStockCount() - 1);
         seckillGoodsService.updateById(seckillGoods);
         //更新订单==》商品表减库存
-        Goods goodsAll = goodsService.getOne(new QueryWrapper<>(), "goods_id".equals(goods.getId()));
-        goodsAll.setGoodsStock(goodsAll.getGoodsStock() - 1);
-        goodsService.updateById(goodsAll);
+//        Goods goodsAll = goodsService.getOne(new QueryWrapper<>(), "goods_id".equals(goods.getId()));
+//        goodsAll.setGoodsStock(goodsAll.getGoodsStock() - 1);
+//        goodsService.updateById(goodsAll);
 
         //生成订单
         Order order = new Order();
