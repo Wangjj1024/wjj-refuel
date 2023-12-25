@@ -46,7 +46,7 @@
                 <!--                    <button class="btn btn-primary btn-block" type="submit" id="buyBotton">立即秒杀</button>-->
                 <!--                </form>-->
                 <button class="btn btn-primary btn-block" type="button" id="buyBotton" onclick="doSeckill()">立即秒杀
-                    <input type="hidden" name="goodsId" id="goodsId" >
+                    <input type="hidden" name="goodsId" id="goodsId">
                 </button>
             </td>
         </tr>
@@ -74,11 +74,14 @@
 
 
     function doSeckill() {
+        console.log(123123)
+        // console.log($("#goodsId").val())
+        // console.log(window.location.search)
         $.ajax({
             url: '/seckill/doSeckill',
             type: 'POST',
             data: {
-                goodsId: $("#goodsId").val()
+                goodsId: window.location.search
             },
             success: function (data) {
                 if (data.code == 200) {

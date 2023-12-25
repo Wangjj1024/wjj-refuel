@@ -44,20 +44,20 @@ public class SecKillController {
      */
     @RequestMapping(value = "/doSeckill", method = RequestMethod.POST)
     @ResponseBody
-    public RespBean doSecKill(Model model, User user, Long goodsId) {
+    public RespBean doSecKill(User user, String goodsId) {
         if (user == null) {
             return RespBean.error(RespBeanEnum.SESSION_ERRRO);
         }
 //        System.out.println(goodsId);
-        GoodsVO goods = goodsService.findGoodsVoByGoodsId(goodsId);
+        String s1 = goodsId.split("=")[1];
+        Long goodsID = Long.parseLong(s1);
+        GoodsVO goods = goodsService.findGoodsVoByGoodsId(goodsID);
         if (goods.getStockCount() < 1) {
-            model.addAttribute("errmsg", RespBeanEnum.EMPTY_STOCK.getMessage());
             return RespBean.error(RespBeanEnum.EMPTY_STOCK);
         }
         //判断是否重复抢购
-        SeckillOrder seckillOrder = seckillOrderService.getOne(new QueryWrapper<SeckillOrder>().eq("user_id", user.getId()).eq("goods_id", goodsId));
+        SeckillOrder seckillOrder = seckillOrderService.getOne(new QueryWrapper<SeckillOrder>().eq("user_id", user.getId()).eq("goods_id", goodsID));
         if (seckillOrder != null) {
-            model.addAttribute("erromsg", RespBeanEnum.PEMPTY_ERROR.getMessage());
             return RespBean.error(RespBeanEnum.PEMPTY_ERROR);
         }
         Order order = orderService.secKill(user, goods);

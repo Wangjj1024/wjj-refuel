@@ -27,7 +27,7 @@ public enum RespBeanEnum {
     SESSION_ERRRO(500215, "用户不存在"),
     //秒杀模块5005xx
     EMPTY_STOCK(500500, "库存不足"),
-    PEMPTY_ERROR(500501, "该商品没人限购一件"),
+    PEMPTY_ERROR(500501, "该商品每人限购一件"),
     ;
 
     private final Integer code;
