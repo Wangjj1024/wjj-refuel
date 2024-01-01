@@ -3,6 +3,7 @@ package com.wjj.miaosha.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wjj.miaosha.exception.GlobalException;
 import com.wjj.miaosha.mapper.OrderMapper;
 import com.wjj.miaosha.pojo.*;
 import com.wjj.miaosha.service.IGoodsService;
@@ -10,6 +11,8 @@ import com.wjj.miaosha.service.IOrderService;
 import com.wjj.miaosha.service.ISeckillGoodsService;
 import com.wjj.miaosha.service.ISeckillOrderService;
 import com.wjj.miaosha.vo.GoodsVO;
+import com.wjj.miaosha.vo.OrderDetailVO;
+import com.wjj.miaosha.vo.RespBeanEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +41,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Autowired
     private IGoodsService goodsService;
 
+
     /**
      * @Description:秒杀
      * @Param:
@@ -54,7 +58,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         seckillGoods.setStockCount(seckillGoods.getStockCount() - 1);
         seckillGoodsService.updateById(seckillGoods);
         //更新订单==》商品表减库存
-//        Goods goodsAll = goodsService.getOne(new QueryWrapper<>(), "goods_id".equals(goods.getId()));
+//        Goods goodsAll = goodsService.getOne(new QueryWrapper<Goods>().eq("goods_id", goods.getId()));
 //        goodsAll.setGoodsStock(goodsAll.getGoodsStock() - 1);
 //        goodsService.updateById(goodsAll);
 
@@ -78,5 +82,25 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         seckillOrderService.save(seckillOrder);
 
         return order;
+    }
+
+    /**
+     * @param orderId
+     * @Description:订单详情
+     * @Param:
+     * @Return:
+     */
+    @Override
+    public OrderDetailVO detail(Long orderId) {
+        if (orderId == null){
+            throw new GlobalException(RespBeanEnum.ORDER_NOT_EXIST);
+        }
+        Order order = orderMapper.selectById(orderId);
+        GoodsVO goodsVoByGoodsId = goodsService.findGoodsVoByGoodsId(orderId);
+        OrderDetailVO orderDetailVO = new OrderDetailVO();
+        orderDetailVO.setOrder(order);
+        orderDetailVO.setGoodsVO(goodsVoByGoodsId);
+
+        return orderDetailVO;
     }
 }

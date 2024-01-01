@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.wjj.miaosha.pojo.Order;
 import com.wjj.miaosha.pojo.User;
 import com.wjj.miaosha.vo.GoodsVO;
+import com.wjj.miaosha.vo.OrderDetailVO;
 
 /**
  * <p>
@@ -21,4 +22,11 @@ public interface IOrderService extends IService<Order> {
      * @Return:
      */
     Order secKill(User user, GoodsVO goods);
+
+    /**
+     * @Description:订单详情
+     * @Param:
+     * @Return:
+     */
+    OrderDetailVO detail(Long orderId);
 }
