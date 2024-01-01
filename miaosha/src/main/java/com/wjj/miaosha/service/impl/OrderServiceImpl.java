@@ -1,5 +1,6 @@
 package com.wjj.miaosha.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wjj.miaosha.mapper.OrderMapper;
@@ -45,7 +46,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Override
     public Order secKill(User user, GoodsVO goods) {
         //更新秒杀订单==》秒杀商品表减库存
-        SeckillGoods seckillGoods = seckillGoodsService.getOne(new QueryWrapper<>(), "goods_id".equals(goods.getId()));
+//        LambdaQueryWrapper<SeckillGoods> queryWrapper = new LambdaQueryWrapper<>();
+//        queryWrapper.eq(SeckillGoods::getId,goods.getId());
+//        SeckillGoods seckillGoods = seckillGoodsService.getOne(new QueryWrapper<>(), "goods_id".equals(goods.getId()));
+        SeckillGoods seckillGoods = seckillGoodsService.getOne(new QueryWrapper<SeckillGoods>().eq("goods_id", goods.getId()));
+//        SeckillGoods seckillGoods = seckillGoodsService.getOne(queryWrapper);
         seckillGoods.setStockCount(seckillGoods.getStockCount() - 1);
         seckillGoodsService.updateById(seckillGoods);
         //更新订单==》商品表减库存

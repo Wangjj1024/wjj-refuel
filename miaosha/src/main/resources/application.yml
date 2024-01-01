@@ -1,4 +1,6 @@
 spring:
+
+
   # thymeleaf配置
   thymeleaf:
     # 缓存
@@ -48,6 +50,11 @@ spring:
         max-idle: 200
         #最小空闲连接，默认0
         min-idle: 5
+  web:
+    #静态资源处理
+    resources:
+
+      add-mappings: true
 #    host: 127.0.0.1
 
 
