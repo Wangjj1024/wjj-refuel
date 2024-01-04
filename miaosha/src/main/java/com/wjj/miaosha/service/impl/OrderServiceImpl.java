@@ -2,6 +2,7 @@ package com.wjj.miaosha.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wjj.miaosha.exception.GlobalException;
 import com.wjj.miaosha.mapper.OrderMapper;
@@ -14,7 +15,9 @@ import com.wjj.miaosha.vo.GoodsVO;
 import com.wjj.miaosha.vo.OrderDetailVO;
 import com.wjj.miaosha.vo.RespBeanEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -41,12 +44,15 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Autowired
     private IGoodsService goodsService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * @Description:秒杀
      * @Param:
      * @Return:
      */
+    @Transactional
     @Override
     public Order secKill(User user, GoodsVO goods) {
         //更新秒杀订单==》秒杀商品表减库存
@@ -56,7 +62,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         SeckillGoods seckillGoods = seckillGoodsService.getOne(new QueryWrapper<SeckillGoods>().eq("goods_id", goods.getId()));
 //        SeckillGoods seckillGoods = seckillGoodsService.getOne(queryWrapper);
         seckillGoods.setStockCount(seckillGoods.getStockCount() - 1);
-        seckillGoodsService.updateById(seckillGoods);
+        boolean result = seckillGoodsService.update(new UpdateWrapper<SeckillGoods>().setSql("stock_count = stock_count - 1")
+                .eq("goods_id", goods.getId()).gt("stock_count", 0));
+
+        if (!result) {
+            return null;
+        }
         //更新订单==》商品表减库存
 //        Goods goodsAll = goodsService.getOne(new QueryWrapper<Goods>().eq("goods_id", goods.getId()));
 //        goodsAll.setGoodsStock(goodsAll.getGoodsStock() - 1);
@@ -81,6 +92,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         seckillOrder.setGoodsId(goods.getId());
         seckillOrderService.save(seckillOrder);
 
+        redisTemplate.opsForValue().set("order:" + user.getId() + ":" + goods.getId(), seckillOrder);
+
         return order;
     }
 
@@ -92,7 +105,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      */
     @Override
     public OrderDetailVO detail(Long orderId) {
-        if (orderId == null){
+        if (orderId == null) {
             throw new GlobalException(RespBeanEnum.ORDER_NOT_EXIST);
         }
         Order order = orderMapper.selectById(orderId);

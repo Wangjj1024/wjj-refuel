@@ -11,6 +11,7 @@ import com.wjj.miaosha.vo.GoodsVO;
 import com.wjj.miaosha.vo.RespBean;
 import com.wjj.miaosha.vo.RespBeanEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +38,9 @@ public class SecKillController {
     @Autowired
     private OrderServiceImpl orderService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     /**
      * @Description:秒杀 windows优化前QPS：1278
      * @Param:
@@ -56,10 +60,14 @@ public class SecKillController {
             return RespBean.error(RespBeanEnum.EMPTY_STOCK);
         }
         //判断是否重复抢购
-        SeckillOrder seckillOrder = seckillOrderService.getOne(new QueryWrapper<SeckillOrder>().eq("user_id", user.getId()).eq("goods_id", goodsID));
+//        SeckillOrder seckillOrder = seckillOrderService.getOne(new QueryWrapper<SeckillOrder>().eq("user_id", user.getId()).eq("goods_id", goodsID));
+
+        SeckillOrder seckillOrder = (SeckillOrder) redisTemplate.opsForValue().get("order:" + user.getId() + ":" + goodsId);
+
         if (seckillOrder != null) {
             return RespBean.error(RespBeanEnum.PEMPTY_ERROR);
         }
+
         Order order = orderService.secKill(user, goods);
         return RespBean.success(order);
     }
